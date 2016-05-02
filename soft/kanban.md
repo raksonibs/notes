@@ -1,0 +1,14 @@
+## Brief introduction to Kanban
+## Dan Radigan
+- A kanban team is only focused on the work that's actively in progress. 
+- Once the team completes a work item, they pluck the next work item off the top of the backlog. The product owner is free to re-prioritize work in the backlog without disrupting the team, because any changes outside the current work items don't impact the team. As long as the product owner keeps the most important work items on top of the backlog, the development team is assured they are delivering maximum value back to the business. So there's no need for the fixed-length iterations you find in scrum. 
+- Cycle time is a key metric for kanban teams. Cycle time is the amount of time it takes for a unit of work to travel through the team’s workflow–from the moment work starts to the moment it ships. 
+- Overlapping skill sets lead to smaller cycle times. When only one person holds a skill set, that person becomes a bottleneck in the workflow. So teams employ basic best practices like code review and mentoring help to spread knowledge. Shared skills mean that team members can take on heterogeneous work, which further optimizes cycle time. It also means that if there is a backup of work, the entire team can swarm on it to get the process flowing smoothly again. For instance, testing isn't only done by QA engineers. Developers pitch in too!
+- In a kanban framework, it's the entire team's responsibility to ensure work is moving smoothly through the process. 
+- Multitasking kills efficiency. The more work items in flight at any given time, the more context switching, which hinders their path to completion. That's why a key tenant of kanban is to limit the amount of work in progress (WIP). Work-in-progress limits highlight bottlenecks and backups in the team's process due to lack of focus, people, or skill sets.
+- For example, a typical software team might have four workflow states: to do, in progress, code review, and done. They could choose to set a WIP limit of 2 for the code review state
+-  take action on code reviews right away, and setting a WIP limit helps the team hold themselves accountable to that. It forces the team to knock out those reviews before pulling in new work. 
+-One of kanban's core values is continuous improvement.. Two common reports kanban teams use are control charts and cumulative flow diagrams.
+- A control chart shows the cycle time for each issue as well as a rolling average for the team. 
+- Although the signaling technology has evolved, this system is still at the core of "just in time" manufacturing today.
+- Kanban does the same for software teams. By matching the amount of work in progress to the team's capacity, kanban gives teams more flexible planning options, faster output, clear focus, and transparency throughout the development cycle. 
