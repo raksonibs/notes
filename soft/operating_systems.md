@@ -1,0 +1,46 @@
+- operating system is resouce allocator
+- operatin system is one program running at all times called kernel, there are then system programs
+- bootstrap program stored in rom and known as firmware selecting all aspects of your program
+- must locate operating system and laod into memory
+- once kernel is executing, can star providing services outside, known as system daemons.  
+- the occurence of an event is signaled by an interurpt. hardware calls interup via syste bus and signal to cpu while softare does a smystem call or a monitor call.
+- interruot routine is fast and called indiretly through table
+- array interuct vector of addresses is indexed by unique device number, given with interrupt reuqest, to provide adress of the interrupt service routine
+- general purpose computers run most of memory in ram or writable memory. main memory is impleneted in semiconductor tech called dynamic random access memory
+- von neumann archeciture, first feches instruction from memory and stores it into instruction register. then decoded 
+- ideally want programs and data to reside in main memory permantently but not possible because main memory to small to store al needed programs permentiantly and is a volatile storage dvice when turned off. thus has secondary storage
+- large portion of os code dedicated to managing i/o because of its importance and 
+- device controller responsible for moving data between peripheral devices it controls and its local buffer storage. typically operating systems hav ea device driver for each device controller
+- to start i/o operation, device driver loads the approipraite regiers within the device controller. the controller examines the contents of theses reigsters to dtemin what action to take, and starts trnasfer of data to its local buffer. once transer is complet,e device informs the device driver via interuppt it is finished, then device driver returns control to operating system.
+- okay with small data, but direct memory access used to transfer ietnire blocks of memory to buffer. fater than one per bit.
+- single processor systems, with one main cpu.
+- run limited instruction set and do not run user processes
+- multiperocessor or parallel systems have three main advantages: increased thorouphut, economy of scale, and increased relaiaiblity
+- graceful degradation
+- fault tolerant systems
+- assymetic multiprocessing and symmetric multiprocesses. asymmetic a boss processor controls system, ad symmetric has own set of registers. 
+- mutliprocessing adds cpu to increase computing power,also increases amount of memory addressable in system
+- can cause system to change its memory access model from uniform memory access to nonuniform memory access. uma is defined as sition in which access to any ram from any cpu takes same amount of time, with numa, some parts of memory may takes same amount of time
+-numa creates perfromance penalty
+- blade servers where everything placed in same chasis
+- blade processor board boots independently and runs operating system
+- clustered system gathers together multiple CPUs.
+- differe from multiprocesser systems in that composed of two or more individual systems joined togehter and thus loosely coupled
+- clusterd system share storage and are loslety linked via local area network
+- usued to provide high avalilibility service
+- most important aspects of operating systems is ability to multiprogram. increases cpu utilization by organizing jobs so cpu always havse one to execute
+- all jobs are kept initallyin on dis in job pool
+- time sharing is loglca extention of multprograming, cpu executes mutliple jobs by swithcing among them, but switches occur so frequently the users can interact with each program while it is running
+- main advantage of virtual memory scheme allows programs larger than phyiscal memory. it also abstracts main memory into a large inform array of storge, separating memory logic.
+- modern operating systems are interrupt driven
+- a trap or expcetion is a software generated interrupt caused by either an error or by a specific request from a user program than an operating system service be perfromed
+- need two separate modes of operation: user mode or kernel mode. a mode bit added to hardware to determine mode
+- intial control in operating system,, with instructions executed in kernel mode. when given to user mode, thenswitched back to kernel via an interrupt
+- use a timer to set to interrupot computer after certain time.
+- a program is a passive entity, wherein a process is an active entity
+- a process is unit of work ina  system.
+- main memory is repo of quickly accessilbe data shared by cpu and i/o devices
+- caching: info stored in storage but copied to cache in temp basis.
+- main memory can be viewed as a fast cache for secondary storag since data in secondary storage must be copied into main memory for use and data must be in main memory
+- in hiercrachical storage strucutre same data may appear in different levels of storage system
+- 
