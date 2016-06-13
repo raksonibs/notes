@@ -43,4 +43,7 @@
 - caching: info stored in storage but copied to cache in temp basis.
 - main memory can be viewed as a fast cache for secondary storag since data in secondary storage must be copied into main memory for use and data must be in main memory
 - in hiercrachical storage strucutre same data may appear in different levels of storage system
+- message passing model vs shared memory model
+- deisgn goals: user goals and system goals 
+- separation of policy from mechanism.
 - 
