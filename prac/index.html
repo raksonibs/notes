@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+
+  <style>
+    #rps, #stixx, #ttt {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div id='game-container'>
+
+  </div>
+
+  <div class="game-ctns" id="rps">
+    <h1>Rock Paper Scissors</h1>
+    <div class="turn" id="turn">Current Turn: </div>
+    <div class="result" id="result">Result so far: Determining</div>
+    <br />
+    <br />
+    <button class="rps">rock</button>
+    <button class="rps">paper</button>
+    <button class="rps">scissors</button>
+  </div>
+
+  <div class="game-ctns" id="ttt">
+    <h1>Tic Tac Toe</h1>
+    <div class="turn" id="turn">Current Turn: </div>
+    <div class="result" id="result">Result so far: Determining</div>
+    <br />
+    <br />
+    
+  </div>
+
+  <div class="game-ctns" id="stixx">
+    <h1>Stixx</h1>
+    <div class="turn" id="turn">Current Turn: </div>
+    <div class="result" id="result">Result so far: Determining</div>
+    <br />
+    <br />
+    
+  </div>
+
+  <script type="text/javascript" charset="utf-8">
+      var gameTypes = [
+                        {
+                          name: 'Rock Paper Scissors',
+                          id: 'rps-select' 
+                        },
+                        {
+                          name: 'Tic Tac Toe',
+                          id: 'ttt-select' 
+                        },
+                        {
+                          name: 'Stixx',
+                          id: 'stixx-select' 
+                        }
+                      ]
+
+      var setupGameTypes = function() {        
+        var gameCtn = document.getElementById('game-container');
+
+        for (var i = 0; i < gameTypes.length; i++) {
+          var newBtn = document.createElement('button');
+          newBtn.id = gameTypes[i].id;
+          newBtn.textContent = gameTypes[i].name;
+          newBtn.className += 'game-type'
+          gameCtn.appendChild(newBtn);
+        }
+        var buttons = document.querySelectorAll('.game-type');
+        setupClickersGameType(buttons);
+      }
+
+      var setupClickersGameType = function(buttons) {
+        for (var i = 0; i < buttons.length; i++) {
+          buttons[i].addEventListener('click', clickHandlerGameType, false)
+        }
+      }
+
+      var setupClickers = function(buttons) {
+        for (var i = 0; i < buttons.length; i++) {
+          buttons[i].addEventListener('click', clickHandler, false)
+        }
+      }
+
+      var game = {
+        users: [1, 2],
+        currentTurn: 1,
+        numMaxMoves: 2,
+        currentMoveCount: 0,
+        currentGameType: '',
+        rps: {
+          moves: {1: '', 2: ''},          
+        },
+        ttt: {          
+          moves: {1: [], 2: []},
+        },
+        stixx: {
+          moves: {1: [], 2: []},
+        }        
+      };
+
+      function recordMove(choice) {
+        console.log('recording move ' + choice);
+        game[game.currentGameType].moves[game.currentTurn.toString()] = choice;
+      }
+
+      function newUser(user) {
+        console.log('checking which user with user id ' + user);
+        return user !== game.currentTurn;
+      }
+
+      function determineWinner() {
+        console.log('detererming winner');
+        var moveOne = game[game.currentGameType].moves["1"];
+        var moveTwo = game[game.currentGameType].moves["2"];
+        
+        if (moveOne === "rock" && moveTwo === "paper") {
+          updateResultHeader("2");
+        } else if (moveOne === "paper" && moveTwo === "rock") {
+          updateResultHeader("1");
+        } else if (moveOne === "paper" && moveTwo === "scissors") {
+          updateResultHeader("2");
+        } else if (moveOne === "scissors" && moveTwo === "paper") {
+          updateResultHeader("1");
+        } else if (moveOne === "scissors" && moveTwo === "rock") {
+          updateResultHeader("2");
+        } else if (moveOne === "rock" && moveTwo === "scissors") {
+          updateResultHeader("1");
+        } else {
+          updateResultHeader("draw");
+        }
+
+        resetGame();
+      }
+
+      function updateResultHeader(userNum) {
+        console.log('updating result header with ' + userNum)
+        var nodes = document.querySelectorAll('.result');
+        if (isNaN(parseInt(userNum))) {
+          var text = userNum;
+        } else {
+          var text= "Winner is: " + userNum;
+        }
+
+        for (var i =0; i < nodes.length; i++) {
+          nodes[i].textContent = text;
+        }
+
+      }
+
+      function resetGame() {
+        console.log('reseting Game ')
+        game.currentMoveCount = 0
+        game["rps"].moves = { 1: '', 2: '' }
+        game["ttt"].moves = {1: [], 2: []}
+        game["stixx"].moves = {1: [], 2: []}
+      }
+
+      var updateTurnHeader = function() {
+        console.log('updating turn header ')
+        var nodes = document.querySelectorAll('.turn');
+        for (var i =0; i < nodes.length; i++) {
+          nodes[i].textContent = "Current User Turn is: " + game.currentTurn;
+        }
+      }
+
+      var updateTurn = function() {
+        console.log('updating turn ')
+        var newCurrentTurn = game.users.find(newUser);
+        game.currentTurn = newCurrentTurn;        
+      }
+
+      var showGameType = function(text) {
+        console.log('show Game type with ' + text)
+        if (text === "Rock Paper Scissors") {
+          console.log("showing rock paper scissors")
+          game.currentGameType = 'rps';
+          gameStart('rps');
+        } else if (text === "Stixx") {
+          console.log("showing stixx")
+          game.currentGameType = 'stixx';
+          gameStart('stixx');
+        } else {
+          console.log("showing ttt")
+          game.currentGameType = 'ttt';
+          gameStart('ttt');
+        }
+      }
+
+      var clickHandlerGameType = function() {
+        console.log("clickhandler game type click with text" + this.textContent);
+        showGameType(this.textContent);
+      }
+
+      var clickHandler = function() {
+        console.log("clickhandler click with text " + this.textContent);
+        console.log(this.textContent);
+        recordMove(this.textContent);
+        updateTurn();
+        updateTurnHeader();
+        game.currentMoveCount += 1;
+        if (game.currentMoveCount === game.numMaxMoves) {          
+          determineWinner();
+        }
+      }
+
+
+      var gameStart = function(type) {
+        console.log("starting game with type " + type);
+        var ctns = document.querySelectorAll('.game-ctns');
+        for (var i=0; i< ctns.length; i++) {
+          ctns[i].style.display = "none";
+        }
+
+        var parentCtn = document.getElementById(type);
+        parentCtn.style.display = "block";
+        var buttons = document.querySelectorAll("." + type);
+
+        setupClickers(buttons);
+
+        updateTurnHeader();
+      }
+
+      // gameStart()
+      setupGameTypes()
+  </script>
+
+</body>
+</html>
