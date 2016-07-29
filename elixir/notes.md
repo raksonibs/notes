@@ -78,3 +78,90 @@ iex> cond do
 ...>  1 + 2
 ...> end)
 true
+
+- ?a gets byte's represented for charater
+- <<0,1,2,3>> is binary just sqeuence of bytes
+- common to concataer null byte to string to see inner binary rep: "hełło" <> <<0>> # <<104, 101, 197, 130, 197, 130, 111, 0>>
+-  <<256 :: size(16)>> # use 16 bits (2 bytes) to store the number <<1, 0>>
+<<256 :: utf8>> # the number is a code point
+"he" <> rest = "hello"
+ rest # "llo"
+ list = [{:a, 1}, {:b, 2}]
+ list ++ [c: 3]
+ [a: 0] ++ list
+ [a: 0, a: 1, b: 2]
+ - keyword lists: keys must be atms, keys are ordered, keys can be given more than once.
+
+ if false, do: :this, else: :that == if(false, [do: :this, else: :that])
+ -
+
+ map = %{:a => 1, 2 => :b}
+%{2 => :b, :a => 1}
+iex> map[:a]
+1
+iex> map[2]
+:b
+iex> map[:c]
+nil
+
+%{} = %{:a => 1, 2 => :b}
+%{2 => :b, :a => 1}
+iex> %{:a => a} = %{:a => 1, 2 => :b}
+%{2 => :b, :a => 1}
+iex> a
+1
+iex> %{:c => c} = %{:a => 1, 2 => :b}
+** (MatchError) no match of right hand side value: %{2 => :b, :a => 1}
+
+Map.get(%{:a => 1, 2 => :b}, :a)
+1
+iex> Map.to_list(%{:a => 1, 2 => :b})
+[{2, :b}, {:a, 1}]
+
+users = update_in users[:mary].languages, &List.delete(&1, "Clojure")
+[john: %{age: 31, languages: ["Erlang", "Ruby", "Elixir"], name: "John"},
+ mary: %{age: 29, languages: ["Elixir", "F#"], name: "Mary"}]
+
+ iex> Math.zero?(0)
+true
+iex> fun = &Math.zero?/1
+&Math.zero?/1
+iex> is_function(fun)
+true
+iex> fun.(0)
+true
+
+ &is_function/1
+&:erlang.is_function/1
+iex> (&is_function/1).(fun)
+true
+
+& is the capture syntax and can create functions via it
+fun = &(&1 + 1)
+#Function<6.71889879/1 in :erl_eval.expr/5>
+iex> fun.(1)
+2
+
+
+ fun = &List.flatten(&1, &2)
+&List.flatten/2
+iex> fun.([1, [[2], 3]], [4, 5])
+[1, 2, 3, 4, 5]
+
+ secodn argument is number of parameters in /X
+- If a function with default values has multiple clauses, it is required to create a function head (without an actual body) for declaring defaults:
+defmodule Concat do
+  def join(a, b \\ nil, sep \\ " ")
+
+  def join(a, b, _sep) when is_nil(b) do
+    a
+  end
+
+  def join(a, b, sep) do
+    a <> sep <> b
+  end
+end
+
+IO.puts Concat.join("Hello", "world")      #=> Hello world
+IO.puts Concat.join("Hello", "world", "_") #=> Hello_world
+IO.puts Concat.join("Hello")               #=> Hello
