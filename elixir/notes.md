@@ -165,3 +165,106 @@ end
 IO.puts Concat.join("Hello", "world")      #=> Hello world
 IO.puts Concat.join("Hello", "world", "_") #=> Hello_world
 IO.puts Concat.join("Hello")               #=> Hello
+
+defmodule Recursion do
+  def print_multiple_times(msg, n) when n <= 1 do
+    IO.puts msg
+  end
+
+  def print_multiple_times(msg, n) do
+    IO.puts msg
+    print_multiple_times(msg, n - 1)
+  end
+end
+
+Recursion.print_multiple_times("Hello!", 3)
+# Hello!
+# Hello!
+# Hello!
+
+
+iex> Enum.map([1, 2, 3], fn x -> x * 2 end)
+[2, 4, 6]
+iex> Enum.map(%{1 => 2, 3 => 4}, fn {k, v} -> k * v end)
+[2, 12]
+
+Enum.reduce(1..3, 0, &+/2)
+
+ odd? = &(rem(&1, 2) != 0)
+#Function<6.80484245/1 in :erl_eval.expr/5>
+iex> Enum.filter(1..3, odd?)
+[1, 3]
+
+- Streams are lazy, composable enumerables.
+
+stream = File.stream!("path/to/file")
+#Function<18.16982430/2 in Stream.resource/3>
+iex> Enum.take(stream, 10)
+- The example above will fetch the first 10 lines of the file you have selected. This means streams can be very useful for handling large files or even slow resources like network resources.
+- In Elixir, all code runs inside processes. Processes are isolated from each other, run concurrent to one another and communicate via message passing. Processes are not only the basis for concurrency in Elixir, but they also provide the means for building distributed and fault-tolerant programs.
+- Elixir’s processes should not be confused with operating system processes. Processes in Elixir are extremely lightweight in terms of memory and CPU (unlike threads in many other programming languages). Because of this, it is not uncommon to have tens or even hundreds of thousands of processes running simultaneously.
+- spawn to span new process: spawn fn -> 1 + 2 end
+- 
+
+send self(), {:hello, "world"}
+{:hello, "world"}
+iex> receive do
+...>   {:hello, msg} -> msg
+...>   {:world, msg} -> "won't match"
+...> end
+"world"
+
+iex> parent = self()
+#PID<0.41.0>
+iex> spawn fn -> send(parent, {:hello, self()}) end
+#PID<0.48.0>
+iex> receive do
+...>   {:hello, pid} -> "Got hello from #{inspect pid}"
+...> end
+"Got hello from #PID<0.48.0>"
+- While other languages would require us to catch/handle exceptions, in Elixir we are actually fine with letting processes fail because we expect supervisors to properly restart our systems. “Failing fast” is a common philosophy when writing Elixir software!
+
+- {:ok, pid} = Agent.start_link(fn -> %{} end)
+{:ok, #PID<0.72.0>}
+iex> Agent.update(pid, fn map -> Map.put(map, :hello, :world) end)
+:ok
+iex> Agent.get(pid, fn map -> Map.get(map, :hello) end)
+:world
+-> agents to update processes state
+- {:ok, body} = File.read(file) avoid for error as s, in case of an error, File.read/1 will return {:error, reason} and the pattern matching will fail. You will still get the desired result (a raised error), but the message will be about the pattern which doesn’t match (thus being cryptic in respect to what the error actually is about).
+
+pid = spawn fn ->
+...>  receive do: (msg -> IO.inspect msg)
+...> end
+-  IO.write(pid, "hello")
+{:io_request, #PID<0.41.0>, #Reference<0.0.8.91>, {:put_chars, :unicode, "hello"}}
+** (ErlangError) erlang error: :terminated
+
+- By modelling IO devices with processes, the Erlang VM allows different nodes in the same network to exchange file processes in order to read/write files in between nodes. Of all IO devices, there is one that is special to each process: the group leader.
+- The group leader can be configured per process and is used in different situations. For example, when executing code in a remote terminal, it guarantees messages in a remote node are redirected and printed in the terminal that triggered the request
+- A list may represent either a bunch of bytes or a bunch of characters and which one to use depends on the encoding of the IO device. If the file is opened without encoding, the file is expected to be in raw mode, and the functions in the IO module starting with bin* must be used. Those functions expect an iodata as argument; i.e., they expect a list of integers representing bytes and binaries to be given
+- On the other hand, :stdio and files opened with :utf8 encoding work with the remaining functions in the IO module. Those functions expect a char_data as an argument, that is, a list of characters or strings.
+- 
+
+# Alias the module so it can be called as Bar instead of Foo.Bar
+alias Foo.Bar, as: Bar
+
+# Ensure the module is compiled and available (usually for macros)
+require Foo
+
+# Import functions from Foo so they can be called without the `Foo.` prefix
+import Foo
+
+# Invokes the custom code defined in Foo as an extension point
+use Foo
+
+- Note that alias is lexically scoped, which allows you to set aliases inside specific functions:
+- In general a module does not need to be required before usage, except if we want to use the macros available in that module. An attempt to call a macro that was not loaded will raise an error. Note that like the alias directive, require is also lexically scoped. We will talk more about macros in a later chapter
+- import List, only: [duplicate: 2]
+- Although not a directive, use is a macro tightly related to require that allows you to use a module in the current context. The use macro is frequently used by developers to bring external functionality into the current lexical scope, often modules.
+- Aliases expand to atoms because in the Erlang VM (and consequently Elixir) modules are always represented by atoms.
+- module attributes:
+  - They serve to annotate the module, often with information to be used by the user or the VM.
+  - They work as constants.
+  - They work as a temporary module storage to be used during compilation
+- 
