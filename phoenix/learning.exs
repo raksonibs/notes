@@ -100,3 +100,64 @@ case Two.call(conn, Two.init([])) do %{halted: true} = conn -> conn conn ->
 case three(conn, some: :option) do %{halted: true} = conn -> conn conn -> conn
 end end
 end
+
+# Ecto associations are explicit! When you want Ecto to fetch some records, you need to ask. When you don’t ask, you can be sure that you won’t get them. This decision may seem tedious at first, but it’s useful. One of the most time-consuming things about dealing with persistence frameworks is that they can often fetch rows you don’t need or fetch in inefficient ways. When these kinds of changes cascade, you can quickly run up a tab that you’re unable to pay.
+# user = Repo.preload(user, :videos)
+# iex> user = Repo.get_by!(User, username: "josevalim") %Rumbl.User{...}
+# iex> attrs = %{title: "hi", description: "says hi", url: "example.com"} iex> video = Ecto.build_assoc(user, :videos, attrs)
+# %Rumbl.Video{...}
+# iex> video = Repo.insert!(video) %Rumbl.Video{...}
+# Ecto.build_assoc allows us to build a struct, with the proper relationship fields already set. 
+
+# query = Ecto.assoc(user, :videos)
+# Repo.all(query)
+
+# This time, instead of building the whole query at once, we write it in small steps, adding a little more information along the way. This strategy works because Ecto defines something called the queryable protocol. from receives a queryable, and you can use any queryable as a base for a new query. A queryable is an Elixir protocol.
+
+# iex> query = Category
+# Category
+# iex> query = from c in query, order_by: c.name #Ecto.Query<>
+# iex> query = from c in query, select: {c.name, c.id} #Ecto.Query<>
+# iex> Repo.all query
+# [{"Action", 1}, {"Comedy", 4}, {"Drama", 2},
+#  {"Romance", 3}, {"Sci-fi", 5}]
+
+username = "josevalim" "josevalim"
+iex> Repo.one(from u in User, where: u.username == ^username)
+
+# The ^ operator interpolates values into our queries where Ecto can scrub them and safely put them to use, without the risk of SQL injection. Armed with our schema definition, Ecto is able to cast the values properly for us and match up Elixir types with the expected database types.
+# In other words, we define the repository and schemas and let Ecto changesets and queries tie them up together. This strategy gives developers the proper level of isolation because we mostly work with data, which is straightforward, and leave all complex operations to the repository.
+# More explicitly, we’d like to keep functions with side effects—the ones that change the world around us—in the controller while the model and view layers remain side effect free. Since Ecto splits the responsibilities between the repository and its data API, it fits our world view perfectly
+
+Repo.one from u in User,
+select: count(u.id),
+where: ilike(u.username, ^"j%") or
+ilike(u.username, ^"c%")
+
+ users_count = from u in User, select: count(u.id)
+
+# User |>
+# select([u], count(u.id)) |>
+# where([u], ilike(u.username, ^"j%") or ilike(u.username, ^"c%")) |> Repo.one()
+
+# A programming truism is that the best abstractions offer an escape hatch, one that exposes the user to one deeper level of abstraction on demand. Ecto has such a feature, called the query fragment. A query fragment sends part of a query directly to the database but allows you to construct the query string in a safe way.
+
+from(u in User,
+where: fragment("lower(username) = ?",
+                     ^String.downcase(uname)))
+
+# Ecto.Adapters.SQL.query(Rumbl.Repo, "SELECT power($1, $2)", [2, 10])
+
+Repo.all from u in User,
+  join: v in assoc(u, :videos),
+  join: c in assoc(v, :category),
+  where: c.name == "Comedy",
+  select: {u, v}
+
+# The third approach is a hybrid approach whereby the application layer (and web server) use database services like referential integrity and transactions to strike a balance between the needs of the application layer and the needs of the database
+
+iex> import Ecto.Changeset
+iex> changeset = Ecto.Changeset.change(category)
+iex> changeset = foreign_key_constraint(changeset, :videos,
+name: :videos_category_id_fkey, message: "still exist") iex> Repo.delete changeset
+{:error, changeset}
