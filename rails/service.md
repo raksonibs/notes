@@ -82,3 +82,5 @@ class SignUp < ActiveInteraction::Base
      user
    end
  end
+
+ ReportTemplate.last.attributes.values_at(*ReportTemplate.column_names)

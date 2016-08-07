@@ -161,3 +161,64 @@ iex> changeset = Ecto.Changeset.change(category)
 iex> changeset = foreign_key_constraint(changeset, :videos,
 name: :videos_category_id_fkey, message: "still exist") iex> Repo.delete changeset
 {:error, changeset}
+
+defmodule MyTest do
+use ExUnit.Case, async: true
+setup do
+# run some tedious setup code :ok
+end
+test "pass" do assert true
+end
+test "fail" do assert false
+end end
+
+ # cast, assoc_constraint, get_change and put_change are all functions defined in Ecto.Changeset, imported by default in your model in web/web.ex.
+
+ video = %Rumbl.Video{id: 1, slug: "hello"} %Rumbl.Video{id: 1, slug: "hello", ...}
+iex> Rumbl.Router.Helpers.watch_path(%URI{}, :show, video) "/watch/1-hello"
+
+# You need to do a couple of things to make a connection. First, you decide whether to allow the connection. Next, you create the initial socket, including any custom application setup your application might need.
+
+# Regardless of the transport, the end result is the same. You operate on a shared socket abstraction, and Phoenix takes care of the rest. The beauty of this is that you no longer have to worry how the user is connected. Whether on older browsers over long-polling, native iOS WebSockets, or a custom transport like CoAP2 for embedded devices, your backend channel code remains precisely the same. This is the new web. You’ll be able to quickly adapt your applications as new transport protocols become important to you.
+# In our UserSocket, we have two simple functions: connect and id. The id function lets us identify the socket based on some state stored in the socket itself, like the user ID. The connect function decides whether to make a connection. In our case, id returns nil, and connect simply lets everyone in. We’re effectively allowing all connections as anonymous users by default.
+# he broadcast! function sends an event to all users on the current topic. It takes three arguments: the socket, the name of the event, and a payload, which is an arbitrary map. Within the body of our callback, we can send as many messages as we’d like.
+# is a long-duration connection. With token authentication, we assign a unique token to each user. Tokens allow for a secure authentication mechanism that doesn’t rely on any specific transport.
+# Programmers often ask why they can’t access their session cookies in a channel. The answer is that this would be insecure over WebSockets because of cross-domain attacks. Also, cookies would couple channel code to the WebSocket transport, eliminating future transport layers. Fortunately, Phoenix has a better way: the Phoenix.Token.
+# We compose a response by rendering an annota- tion.json view for every annotation in our list. Instead of building the list by hand, we use Phoenix.View.render_many. The render_many function collects the render results for all elements in the enumerable passed to it. We use the view to present our data, so we offload this work to the view layer so the channel layer can focus on messaging.
+
+# We used concurrency and recursion to maintain state.
+# • We separated the interface from the implementation.
+# • We used different abstractions for asynchronous and synchronous com- munication with our server.
+
+# Our OTP counter server works exactly as before, but we’ve gained much by moving it to a GenServer. On the surface, we no longer need to worry about setting up references for synchronous messages. Those are taken care of for us by GenServer.call. Second, the GenServer module is now in control of the receive loop, allowing it to provide great features like code upgrading and handling of system messages, which will be useful when we introspect our system with Observer later on. A GenServer is one of many OTP behaviors. We’ll continue exploring them as we build our information system.
+# Though our counter is a trivial service, we’ll play with supervision strategies. Our supervisor needs to be able to restart each service the right way, according to the policies that are best for the application. For example, if a database dies, you might want to automatically kill and restart the associated connection pool. This policy decision should not impact code that uses the database. If we replace a simple supervisor process with a supervisor tree, we can build much more robust fault-tolerance and recovery software.
+# With a supervision tree having a configurable policy, you can build robust self-healing software without building complex self-healing software.
+# In opts, you can see the policy that our application will use if something goes wrong. OTP calls this policy the supervision strategy. In this case, we’re using the :one_for_one strategy. This strategy means that if the child dies, only that child will be restarted. If all resources depended on some common service, we could have specified :one_for_all to kill and restart all child process if any child dies. We’ll explore those strategies later on.
+# It turns out that a still simpler abstraction has many of the benefits of a GenServer. It’s called an agent. With an agent, you have only five main functions: start_link initializes the agent, stop stops the agent, update changes the state of the agent, get retrieves the agent’s current value, and get_and_update performs the last two operations simultaneously. 
+iex> import Agent
+nil
+iex> {:ok, agent} = start_link fn -> 5 end {:ok, #PID<0.57.0>}
+iex> update agent, &(&1 + 1)
+:ok
+iex> get agent, &(&1)
+6
+iex> stop agent
+:ok
+
+
+iex> import Agent
+nil
+iex> {:ok, agent} = start_link fn -> 5 end, name: MyAgent {:ok, #PID<0.57.0>}
+iex> update MyAgent, &(&1 + 1)
+:ok
+iex> get MyAgent, &(&1)
+6
+iex> stop MyAgent
+:ok
+
+# When you coded your channels in the last chapter, you might not have known it, but you were building an OTP application. Each new channel was a process built to serve a single user in the context of a single conversation on a topic. Though Phoenix is new, we’re standing on the shoulders of giants. Erlang’s OTP has been around as long as Erlang has been popular—we know that it works. Much of the world’s text-messaging traffic runs on OTP infrastructure.
+
+# OTP stands for Open Telecom Platform, although it's not that much about telecom anymore (it's more about software that has the property of telecom applications, but yeah.) If half of Erlang's greatness comes from its concurrency and distribution and the other half comes from its error handling capabilities, then the OTP framework is the third half of it.
+# We want to fetch the most relevant information for a user in real time, across different backends. Since we’re fetching results in parallel, a failure likely means that the network or one of our third-party services failed. That’s out of our control. It doesn’t make sense for us to retry the computation. because this operation is time sensi- tive—a video is playing. Instead, we want to spawn processes in parallel and let them do their work, and we’ll take as many results as we can get. If one of ten of our information systems crashes, it’s not a problem. We’ll use the results from the other nine, so we’ll use the :temporary restart strategy.
+# ou’ve ensured that a single crash in an isolated information system won’t impact the rest of your applica- tion. You’ve also configured a supervisor that will in turn be supervised by the application. The result goes beyond simple monitoring. You’ve made some policy decisions to customize our transient information systems into the overall application.
+#  Let’s use a technique called proxying. A proxy function is a lightweight function that stands between the original caller and the original implementation to do some simple task. Our generic start_link will proxy individual start_link functions for each of our backends. More specifically, we’ll build a generic information system interface that knows about available backends and spawns a process to query each available backend service, fetches the result, and picks the best result from all possible candidates.
