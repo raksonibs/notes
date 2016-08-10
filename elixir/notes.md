@@ -268,3 +268,30 @@ use Foo
   - They work as constants.
   - They work as a temporary module storage to be used during compilation
 - 
+
+- functional languages populer because computers are getting wider, not bigger
+- node allows for asynch programming but single thread and external process called event loop, no same as concurrent programming
+- allow for distrubuted programming because no mutations
+- “Greenspun’s Tenth Rule:
+
+Any sufficiently complicated [distributed architectural pattern in an object-oriented language] contains an ad hoc, informally-specified, bug-ridden, slow implementation of half of [Erlang].”
+
+- impure functional programming
+- rebinding variables on fly
+- refactoring code into small functions sequence together: currying
+- “In math, = means something else entirely. It means the two terms on either side of the sign are equivalent. That’s the way it is with Elixir.”
+- “import Physics.Laws, only: [newtons_gravitational_constant: 0]” -> arity
+- new_planet = %{name: "Pluto", type: :rocky, ev: 1.1}
+List.insert_at(planets, -1, new_planet)
+planets ++ new_planet
+[new_planet] ++ planets
+new_list = [old_list | new_item ]
+
+-“venus = %{venus | ev: 8.4}” - updating venus ev
+-“planet_names = for planet <- planets, planet.type == :rocky, do: planet.name”
+“planet_names = for %{name: name, type: type} <- planets, type == :rocky, do: name”
+“An Application is simply a formalized “parent” process that owns other processes or applications. ”
+- “an application is a component implementing some functionality”
+- “It’s an .exs file, which means it’s an Elixir script, compiled at runtime.”
+- “ Rather than write defensive code to handle errors, Erlang/Elixir developers create supervised processes and handle their exit case.”
+

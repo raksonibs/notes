@@ -222,3 +222,21 @@ iex> stop MyAgent
 # We want to fetch the most relevant information for a user in real time, across different backends. Since we’re fetching results in parallel, a failure likely means that the network or one of our third-party services failed. That’s out of our control. It doesn’t make sense for us to retry the computation. because this operation is time sensi- tive—a video is playing. Instead, we want to spawn processes in parallel and let them do their work, and we’ll take as many results as we can get. If one of ten of our information systems crashes, it’s not a problem. We’ll use the results from the other nine, so we’ll use the :temporary restart strategy.
 # ou’ve ensured that a single crash in an isolated information system won’t impact the rest of your applica- tion. You’ve also configured a supervisor that will in turn be supervised by the application. The result goes beyond simple monitoring. You’ve made some policy decisions to customize our transient information systems into the overall application.
 #  Let’s use a technique called proxying. A proxy function is a lightweight function that stands between the original caller and the original implementation to do some simple task. Our generic start_link will proxy individual start_link functions for each of our backends. More specifically, we’ll build a generic information system interface that knows about available backends and spawns a process to query each available backend service, fetches the result, and picks the best result from all possible candidates.
+
+# guard clause on function call “def convert_to_light_seconds(miles) when is_integer(miles) do”
+
+“def convert_to_light_seconds({:miles, miles}) when is_integer(miles) do
+  miles * 5.36819e-6
+end
+
+def convert_to_light_seconds({:meters, meters}) when is_integer(meters) do
+  meters * 3.335638620368e-9
+end”
+
+“# a simple way to call our converter function
+convert_to_light_seconds({:miles, 2})
+
+# a more elegant, Elixir-y way of doing it
+{:miles, 2} |> convert_to_light_seconds
+”
+
