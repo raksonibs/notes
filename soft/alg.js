@@ -84,8 +84,9 @@ var move = function(n, source, destination) {
   disks[source] = n;
   disks[destination] = n;
 }
+console.log("wtf")
 
-import Stack from "stack"
+import { Stack } from "./stack.js"
 
 var o = new Stack();
 o.push(3)
