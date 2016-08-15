@@ -1,4 +1,6 @@
 import _ from "underscore";
+import { Stack } from "./stack.js"
+import { Queue } from "./queue.js"
 
 console.log("YO")
 
@@ -88,8 +90,6 @@ var move = function(n, source, destination) {
 }
 console.log("wtf")
 
-import { Stack } from "./stack.js"
-
 // var o = new Stack();
 // o.push(3)
 // o.push(4)
@@ -148,3 +148,10 @@ function parenMatch(array) {
 // console.log(parenMatch(["{[]}"]));
 // console.log(parenMatch(["{[]()}"]));
 // console.log(parenMatch(["{[](){}"]));
+
+var o = new Queue();
+o.enqueue(3)
+o.enqueue(4)
+o.enqueue(5)
+o.dequeue();
+console.log(o);

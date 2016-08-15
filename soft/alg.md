@@ -45,3 +45,19 @@ least cn
   - jvm keeps stack n stack. when method ends, its frame is popped from stack and control passed to top of stack. allows for recursion
   - use index to keep track of top
   - space used is O(n), each operatin run time is O(1)
+
+- queues
+  - insertrs are at read and removals are at front
+  - circular wrapped array when fixed size is f is front of index, and r is index immedaelty past the read
+  - size implemented by (r + size * f) % mod(N)
+  - is empty is if front = rear
+  - to enqueue then you need to array[r] = object, and then r = (r + 1) mod N
+  - for dequeue need object = Q[front], front = (f + 1 )mode N
+
+- Linkedlist
+  - access for arrays is get, set at 0(1)
+  - structural operations like add and remove take O(n) time
+  - advantages of using queue with single linked list is no fullstack exception
+  - adding at head and removing at head become O(1) operations
+  - insert and deletion of double linked list only takes o(1) time
+  
