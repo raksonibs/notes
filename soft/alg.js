@@ -149,9 +149,25 @@ function parenMatch(array) {
 // console.log(parenMatch(["{[]()}"]));
 // console.log(parenMatch(["{[](){}"]));
 
-var o = new Queue();
-o.enqueue(3)
-o.enqueue(4)
-o.enqueue(5)
-o.dequeue();
-console.log(o);
+// var o = new Queue();
+// o.enqueue(3)
+// o.enqueue(4)
+// o.enqueue(5)
+// o.dequeue();
+// console.log(o);
+
+// makeHeap(A, n) {
+//   for (let i =0; i< n/2; i++) {
+//     downHeap(A, i, n)
+//   }
+// }
+
+// makeHeap(A, i, n) {
+//   if (i <= n/2) {
+//     makeHeaP(a, left(i), n)
+//     makeHeaP(a, right(i), n)
+//   }
+
+//   downHeap(a, i n)
+// }
+
