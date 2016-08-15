@@ -1,3 +1,5 @@
+import _ from "underscore";
+
 console.log("YO")
 
 var fib = function(n) {
@@ -88,9 +90,61 @@ console.log("wtf")
 
 import { Stack } from "./stack.js"
 
-var o = new Stack();
-o.push(3)
-o.push(4)
-o.push(5)
-o.pop();
-o.top();
+// var o = new Stack();
+// o.push(3)
+// o.push(4)
+// o.push(5)
+// o.pop();
+console.log('yo')
+
+function parenMatch(array) {
+  var o = new Stack();
+  const openings = ["{", "[", "("];
+  const closings = ["}", "]", ")"];
+  array = array[0].split("");
+
+  for (let i = 0; i< array.length; i ++) {
+    // console.log("looking at ", array[i]);
+    if (_.contains(openings, array[i])) {
+      // console.log("outputting what is going in array", array[i]);
+      o.push(array[i]);
+    } else {
+      if (o.isEmpty()) {
+        // console.log("it's empty ", array[i]);
+        // console.log(o)
+        return false;
+      } else {
+        // console.log("over here with ", array[i]);
+        // console.log("top of stack ", o.top());
+
+        if (
+            (o.top() === "{" && array[i] !== "}") || 
+            (o.top() === "[" && array[i] !== "]") ||
+            (o.top() === "(" && array[i] !== ")")
+          ) {
+              // console.log("no match ", array[i]);
+              return false;            
+            } else {
+              // console.log("popping")
+              o.pop()
+            }
+
+
+      }
+    }
+  }
+
+  if (o.isEmpty()) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+// console.log(_.contains([1,2,3], 5));
+// console.log(parenMatch(["{}"]));
+// console.log(parenMatch(["{}()[]"]));
+// console.log(parenMatch(["{}()["]));
+// console.log(parenMatch(["{[]}"]));
+// console.log(parenMatch(["{[]()}"]));
+// console.log(parenMatch(["{[](){}"]));
