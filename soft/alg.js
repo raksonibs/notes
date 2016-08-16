@@ -171,3 +171,131 @@ function parenMatch(array) {
 //   downHeap(a, i n)
 // }
 
+function treeSearch(k, v) {
+  if (t.isExternal(v)) {
+    return v;
+  }
+
+  if (key < key(v)) {
+    return treeSearch(k, T.left(v))
+  } else if (k === key(f)) {
+    return v
+  } else {
+    return treeSearch(k, T.right(v))
+  }
+
+
+}
+
+function selectionSort(array) {
+  for (let i = 0; i < array.length; i++) {
+    let jmin = i;
+    for (let j = i + 1; j < array.length; j++) {
+      if (array[j] < array[jmin]) {
+        jmin = j;
+      }
+    }
+
+    swap(array, i, jmin)
+  }
+
+  return array;
+}
+
+function swap(array, i, jmin) {
+  let tmp = array[i];
+  array[i] = array[jmin];
+  array[jmin] = tmp;
+}
+
+
+
+function bubbleSort(array) {
+  for (let i = array.length; i > 0; i--) {
+    let jmin = i;
+    for (let j = 0; j < i - 1; j++) {
+      if (array[j] > array[j+1]) {
+        swap(array, j, j+1);
+      }
+    }
+
+  }
+
+  return array;
+}
+
+function insertionSort(array) {
+  for (let i = 0; i < array.length; i++) {
+    let key = array[i]
+    let j = i;
+    while (j > 0 && array[j-1] > key)  {
+      swap(array, j, j - 1)
+      j = j - 1
+    }
+
+    array[j] = key;
+  }
+
+  return array;
+}
+
+function mergeSort(array) {
+  if (array.length > 1) {
+    let splitted = split(array, array.length/2);
+    let s1 = splitted[0]
+    let s2 = splitted[1]
+    mergeSort(s1)
+    mergeSort(s2)
+    merge(s1, s2, array)
+  }
+}
+
+function merge(s1, s2, array) {
+  let i = 0;
+  let j = 0;
+  while (i < s1.length && j < array.length) {
+    if (s1[i] <= s2[j]) {
+      s.push(s1[i]);
+      i += 1;
+    } else {
+      s.push(s2[j]);
+      j += 1;
+    }
+  }
+
+  while (i < s1.length) {
+    s.push(s1[i]);
+    i += 1;
+  }
+
+  while (i < s2.length) {
+    s.push(s2[j]);
+    j += 1;
+  }
+}
+
+function heapSort(array) {
+  let maxHeap = makeMaxHeap(array)
+
+  for (let i = array.length; i > 0; i--) {
+    array[i] = maxHeap.removeMax();
+  }
+}
+
+
+function quickSort(array) {
+  if (array.length > 1) {
+    let partitioned = partition(array)
+    let left = partitioned[0]
+    let equal = partitioned[1]
+    let right = partitioned[2]
+
+    quickSort(left)
+    quickSort(right)
+    array = join(left, equal, right)
+    return array;
+  } else {
+    return array;
+  }
+}
+console.log(insertionSort([2,1,5,5, 2, 9, 5, 3, 10]));
