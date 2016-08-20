@@ -13,4 +13,5 @@ To generate this message, Docker took the following steps:
 - The docker build -t docker-whale . command takes the Dockerfile in the current directory, and builds an image called docker-whale on your local machine. 
 - First Docker checks to make sure it has everything it needs to build.
 - Then, Docker loads with the whalesay image. It already has this image locally as you might recall from the last page. So, Docker doesn’t need to download it.
-- 
+- Finally, docker-compose.yml is where the magic happens. This file describes the services that comprise your app (a database and a web app), how to get each one’s Docker image (the database just runs on a pre-made PostgreSQL image, and the web app is built from the current directory), and the configuration needed to link them together and expose the web app’s port.
+- docker-compose run web rails new . --force --database=postgresql --skip-bundle
