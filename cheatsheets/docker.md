@@ -1,0 +1,15 @@
+- docker version: prints version
+- docker info: prints info
+- sudo docker -d: check docker daemon
+- docker pull x:latest: pull latest images of project
+  - docker pull ubuntu@sha2443....
+- docker run -d -t ubuntu: create and start commands joined to start container based on image
+- docker ps: list all running containers
+- docker ps -a: list all running containers with some extra columns
+- docker inspect x/name: inspect the docker properties, like id, created at, environment, etc
+- docker exec -t -i b09396d4ffa5 /bin/bash: goes into existing process and -t and -i command run a terminal (inside use ps -ef to check if running)
+- docker run --rm -v /usr/local/bin:/target jpetazzo/nsenter: example way of installing nsenter to /usr/local/bin
+- sudo nsenter --target $PID --mount --uts --ipc --net --pid: use nsenter to docker exec but safely
+- docker logs b09396d4ffa5, -f tail command
+- docker stats <sha>:
+- 
