@@ -1,0 +1,2 @@
+- You need to deliver a system that minimizes environment dependence before the contract is complete.
+-

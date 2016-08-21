@@ -13,3 +13,19 @@
 - docker logs b09396d4ffa5, -f tail command
 - docker stats <sha>:
 - 
+docker inspect --format "{{.State.Running}}" <<name>>
+  - check if running
+- docker run -d --name wp2 \
+    --link wpdb:mysql \
+    -p 80 --read-only \
+    wordpress:4
+      - link db with daemon
+- docker top lamp-test
+  - see what processes are running inside the container
+- docker stop $(docker ps -a -q); docker rm $(docker ps -a -q);
+  - kill all containers
+- docker rm -vf $(docker ps -a -q)
+- docker save -o myfile.tar busybox:latest
+  - save command exports an image, using o specify output file
+- git clone https://github.com/dockerinaction/ch3_dockerfile.git
+- docker build -t dia_ch3/dockerfile:latest ch3_dockerfile
