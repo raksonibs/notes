@@ -25,7 +25,25 @@ docker inspect --format "{{.State.Running}}" <<name>>
 - docker stop $(docker ps -a -q); docker rm $(docker ps -a -q);
   - kill all containers
 - docker rm -vf $(docker ps -a -q)
+-  docker rm $(docker ps -a -q -f status=exited)
 - docker save -o myfile.tar busybox:latest
   - save command exports an image, using o specify output file
 - git clone https://github.com/dockerinaction/ch3_dockerfile.git
 - docker build -t dia_ch3/dockerfile:latest ch3_dockerfile
+- docker run -d --volume /var/lib/cassandra/data (specifies volumne mount) --name apline echo Data Container
+- docker run -d --volumes-from cass-shared --name cass1 cassandra:2.2 (pulls the cassandra2.2 image and copies volumne defintions from columne container, thus have the same volumen mounted at /var/lib/cassandra/data)
+- run some commands:
+  docker run –it --rm --link cass1:cass cassandra:2.2 cqlsh cass
+    - running a client tool and connecting to server from cassandra2.2:image
+
+  - docker run -d --name bmweb -v ~/example-docs:/usr/local/apache2/htdocs(/:ro to make readonly) -p 80:80 httpd:latest
+    - start apache http server where new directory is bind mounted to server's document root
+- docker inspect -f "{{json .Volumes}}" cass-shared
+  - find where docker created the volumes
+-docker port <name ctn>
+- docker network create foodtrucks
+  - create bridge network
+-docker run -dp 9200:9200 --net foodtrucks --name es elasticsearch
+  - run in detached with port 9200 with the network foodtrucks
+- docker run --rm a05e716303d8 ls
+  - explore with image (run via docker images -a or docker ps -a to find what went wrong)

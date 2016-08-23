@@ -45,3 +45,32 @@ relationships form layers. When we say that we have installed an image, we are
 saying that we have installed a target image and each image layer in its lineage.
 ■ Structuring images with layers enables layer reuse and saves bandwidth during
 distribution and storage space on your computer.
+
+- A host or container’s directory tree is created by a set of mount points that describe how to piece together one or more file systems. A volume is a mount point on the con- tainer’s directory tree where a portion of the host directory tree has been mounted. Most people are only minimally familiar with file systems and mount points and rarely customize them. 
+- images are appropriate for packaging and distributing rel- atively static files like programs; volumes hold dynamic data or specializations. This distinction makes images reusable and data simple to share. This separation of rela- tively static and dynamic file space allows application or image authors to implement advanced patterns such as polymorphic and composable tools.
+-  The value of a database is defined by the data it con- tains. A database program always presents the same interface but takes on a wholly different value depending on the data that can be injected with a volume. The poly- morphic container pattern
+- More fundamentally, volumes enable the separation of application and host con- cerns. At some point an image will be loaded onto a host and a container created from it. Docker knows little about the host where it’s running and can only make assertions about what files should be available to a container. That means Docker alone has no way to take advantage of host-specific facilities like mounted network storage or mixed spin- ning and solid-state hard drives. But a user with knowledge of the host can use volumes to map directories in a container to appropriate storage on that host.
+- 
+There are two types of volume. Every volume is a mount point on the container direc- tory tree to a location on the host directory tree, but the types differ in where that location is on the host. The first type of volume is a bind mount. Bind mount volumes use any user-specified directory or file on the host operating system. The second type is a managed volume. Managed volumes use locations that are created by the Docker daemon in space controlled by the daemon, called Docker managed space. 
+- you used the -v option and a location map to create the bind mount volume. The map is delimited with a colon (as is common with Linux-style command-line tools). The map key (the path before the colon) is the absolute path of a location on the host file system, and the value (the path after the colon) is the loca- tion where it should be mounted inside the container. You must specify locations with absolute paths.
+- Managed volumes are different from bind mount volumes because the Docker dae- mon creates managed volumes in a portion of the host’s file system that’s owned by Docker, as shown in figure 4.5. Using managed volumes is a method of decoupling volumes from specialized locations on the file system.
+- The flag --volumes-from can be set multiple times to specify multiple source containers.
+- uppose you wanted to update your database software (use a new image). If your database container writes its state to a volume and that volume was defined by a vol- ume container, the migration would be as simple as shutting down the original data- base container and starting the new one with the volume container as a volume source. Backup and restore operations could be handled similarly. This, of course, assumes that the new database software is able to read the storage format of the old software, and it looks for the data at the same location.
+- 
+Volume containers are most useful when you control and are able to standardize on mount point naming conventions.
+- ■ Volumes allow containers to share files with the host or other containers.
+■ Volumes are parts of the host file system that Docker mounts into containers at
+specified locations.
+■ There are two types of volumes: Docker-managed volumes that are located in
+the Docker part of the host file system and bind mount volumes that are located
+anywhere on the host file system.
+■ Volumes have life cycles that are independent of any specific container, but a
+user can only reference Docker-managed volumes with a container handle.
+The orphan volume problem can make disk space difficult to recover. Use the -v option on docker rm to avoid the problem.
+The volume container pattern is useful for keeping your volumes organized and avoiding the orphan volume problem.
+The data-packed volume container pattern is useful for distributing static con- tent for other containers.
+The polymorphic container pattern is a way to compose minimal functional components and maximize reuse.
+- these images include multiple ONBUILD triggers, which should be all you need to bootstrap most applications. The build will COPY a requirements.txt file, RUN pip install on said file, and then copy the current directory into /usr/src/app.
+- In other words, the onbuild version of the image includes helpers that automate the boring parts of getting an app running. Rather than doing these tasks manually (or scripting these tasks), these images do that work for you. We now have all the ingredients to create our own image - a functioning web app and a base image. How are we going to do that? The answer is - using a Dockerfile.
+-The bridge network is the network in which containers are run by default. So that means that when I ran the ES container, it was running in this bridge network.
+- 
