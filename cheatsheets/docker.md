@@ -47,3 +47,8 @@ docker inspect --format "{{.State.Running}}" <<name>>
   - run in detached with port 9200 with the network foodtrucks
 - docker run --rm a05e716303d8 ls
   - explore with image (run via docker images -a or docker ps -a to find what went wrong)
+- docker-compose run web rake db:create db:setup / docker-compose run web rails console / docker-compose up
+- docker wait ci_sut_1
+  - check exit code for container
+- docker logs -f ci_sut_1
+  - check logs of container
