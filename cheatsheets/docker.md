@@ -52,3 +52,7 @@ docker inspect --format "{{.State.Running}}" <<name>>
   - check exit code for container
 - docker logs -f ci_sut_1
   - check logs of container
+- docker inspect --format '{{ .NetworkSettings.IPAddress }}' redgreenapi_web_1
+  - get ip of container
+- sudo rm tmp/pids/server.pid 
+  - rm in case running
